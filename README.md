@@ -21,7 +21,7 @@ After you are in sync with `origin/main` Then you can run
 ```shell
 vendor/bin/sail up -d
 vendor/bin/sail shell
-php artisan migrate:fresh
+php artisan migrate
 ```
 ### Daily usage
 After you are in sync with `origin/main` Then you can run
