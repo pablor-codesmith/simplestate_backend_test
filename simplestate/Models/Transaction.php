@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use SimpleState\Database\Factories\TransactionFactory;
+use SimpleState\Enums\TransactionStatusEnum;
 
 class Transaction extends Model
 {
@@ -36,6 +37,7 @@ class Transaction extends Model
      */
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
+        'status' => TransactionStatusEnum::class
     ];
 
     /**

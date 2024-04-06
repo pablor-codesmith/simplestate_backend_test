@@ -4,7 +4,7 @@ namespace Tests\Feature\Models;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use SimpleState\Models\Balance;
+use SimpleState\Models\Investment;
 use Tests\TestCase;
 
 class InvestmentTest extends TestCase
@@ -15,8 +15,8 @@ class InvestmentTest extends TestCase
      */
     public function test_create_investment_model(): void
     {
-        $model = Balance::factory()->create();
+        $model = Investment::factory()->create();
 
-        $this->assertInstanceOf(Balance::class, $model);
+        $this->assertInstanceOf(Investment::class, $model);
     }
 }

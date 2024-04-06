@@ -24,6 +24,7 @@ class Investment extends Model
         'status',
         'user_id',
         'project_id',
+        'transaction_id',
         'created_at'
     ];
 
@@ -51,5 +52,9 @@ class Investment extends Model
 
     public function project(){
         return $this->belongsTo(Project::class);
+    }
+
+    public function transaction(){
+        return $this->belongsTo(Transaction::class);
     }
 }

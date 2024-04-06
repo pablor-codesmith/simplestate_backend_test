@@ -5,6 +5,7 @@ namespace SimpleState\Database\Factories;
 use SimpleState\Models\Operation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use SimpleState\Enums\TransactionStatusEnum;
 use SimpleState\Models\Transaction;
 
 /**
@@ -28,7 +29,7 @@ class TransactionFactory extends Factory
     {
         return [
             'amount' => fake()->randomNumber(),
-            'status' => fake()->randomElement(['pending', 'finished', 'approved']),
+            'status' => TransactionStatusEnum::getRandomValue(),
             'user_id' => User::factory(),
             'operation_id' => Operation::factory(),
             'created_at' => now()->format('Y-m-d')

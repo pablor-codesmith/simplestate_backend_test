@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name',30);
             $table->string('operator',1)->default('+');
-            $table->timestamps();
         });
     }
 

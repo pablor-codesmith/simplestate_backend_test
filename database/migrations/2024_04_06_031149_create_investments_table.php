@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('project_id')->constrained();
+            $table->bigInteger('transaction_id')->unsigned()->nullable();
             $table->date('created_at')->useCurrent();
         });
     }
