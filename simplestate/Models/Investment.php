@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use SimpleState\Database\Factories\InvestmentFactory;
+use Illuminate\Database\Eloquent\Builder;
+use SimpleState\Enums\InvestmentStatusEnum;
 
 class Investment extends Model
 {
@@ -36,6 +38,7 @@ class Investment extends Model
      */
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
+        'status' => InvestmentStatusEnum::class
     ];
 
     /**
@@ -56,5 +59,20 @@ class Investment extends Model
 
     public function transaction(){
         return $this->belongsTo(Transaction::class);
+    }
+
+    /**
+     * Scope a query to only include owner jobs.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUserInvestments(Builder $query){
+        return $query->selectRaw('
+                            users.first_name,
+                            COUNT(investments.id) AS `investment`,
+                            SUM(investments.amount) AS `total`'
+            )
+            ->join('users', 'users.id', '=', 'investments.user_id')
+            ->groupBy('users.id');
     }
 }

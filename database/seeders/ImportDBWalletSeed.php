@@ -1,27 +1,20 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+namespace Database\Seeders;
 
-return new class extends Migration
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class ImportDBWalletSeed extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the database seeds.
      */
-    public function up(): void
+    public function run(): void
     {
         DB::connection('wallet')->unprepared(file_get_contents(database_path('data/balances.sql')));
         DB::connection('wallet')->unprepared(file_get_contents(database_path('data/operations.sql')));
         DB::connection('wallet')->unprepared(file_get_contents(database_path('data/transactions.sql')));
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::connection('wallet')->dropAllTables();
-    }
-};
+}

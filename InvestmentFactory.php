@@ -4,6 +4,7 @@ namespace SimpleState\Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use SimpleState\Enums\InvestmentStatusEnum;
 use SimpleState\Models\Project;
 use SimpleState\Models\Transaction;
 
@@ -21,7 +22,7 @@ class InvestmentFactory extends Factory
     {
         return [
             'amount' => fake()->randomNumber(),
-            'status' => fake()->randomElement(['pending','finished','approved']),
+            'status' => InvestmentStatusEnum::getRandomValue(),
             'user_id' => User::factory(),
             'project_id' => Project::factory(),
             'created_at' => now()->format('Y-m-d'),

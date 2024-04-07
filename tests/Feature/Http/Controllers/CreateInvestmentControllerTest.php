@@ -5,7 +5,9 @@ namespace Tests\Feature\Http\Controllers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use SimpleState\Enums\OperationTypeEnum;
 use SimpleState\Models\Investment;
+use SimpleState\Models\Operation;
 use Tests\TestCase;
 
 class CreateInvestmentControllerTest extends TestCase
@@ -16,6 +18,7 @@ class CreateInvestmentControllerTest extends TestCase
      */
     public function test_create_investment(): void
     {
+        Operation::factory()->create(['name' => OperationTypeEnum::INVEST, 'operator' => '+']);
         /** @var Array $investment */
         $investment = Investment::factory()->make()->only(['amount','project_id','user_id']);
         $response = $this->postJson(route('investment.create'),$investment);

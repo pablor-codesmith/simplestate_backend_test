@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use SimpleState\Models\AccountBank;
+use SimpleState\Models\Investment;
 
 class User extends Authenticatable
 {
@@ -45,4 +47,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function investments(){
+        return $this->hasMany(Investment::class);
+    }
+
+    public function accounts(){
+        return $this->hasMany(AccountBank::class);
+    }
 }
