@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use SimpleState\Models\AccountBank;
 use SimpleState\Models\Investment;
+use SimpleState\Models\Transaction;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -54,5 +56,19 @@ class User extends Authenticatable
 
     public function accounts(){
         return $this->hasMany(AccountBank::class);
+    }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Get the user's full name.
+     */
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string) $this->first_name.' '.$this->last_name,
+        );
     }
 }

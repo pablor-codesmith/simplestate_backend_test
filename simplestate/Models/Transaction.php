@@ -3,6 +3,7 @@
 namespace SimpleState\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -49,7 +50,7 @@ class Transaction extends Model
     }
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->setConnection('mysql')->belongsTo(User::class);
     }
 
     public function operation(){
