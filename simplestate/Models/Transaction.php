@@ -28,7 +28,8 @@ class Transaction extends Model
         'status',
         'user_id',
         'operation_id',
-        'created_at'
+        'created_at',
+        'debin_id'
     ];
 
     /**

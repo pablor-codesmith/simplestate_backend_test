@@ -19,6 +19,7 @@ class SearchInvestmentControllerTest extends TestCase
      */
     public function test_investment_list(): void
     {
+
         $user1 = User::factory()->has(Investment::factory(10), 'investments')->create();
         $user2 = User::factory()->has(Investment::factory(10), 'investments')->create();
         $user3 = User::factory()->has(Investment::factory(35), 'investments')->create();
@@ -45,7 +46,7 @@ class SearchInvestmentControllerTest extends TestCase
         $response->assertSuccessful()
             ->assertJson(fn (AssertableJson $json) => $json->has('data')
             ->count('data', 1)
-            ->where('data.0.investment', 35)
+            ->where('data.0.Cantidad', 35)
             ->etc());
     }
 }

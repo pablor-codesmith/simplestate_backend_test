@@ -68,9 +68,9 @@ class Investment extends Model
      */
     public function scopeUserInvestments(Builder $query){
         return $query->selectRaw('
-                            users.first_name,
-                            COUNT(investments.id) AS `investment`,
-                            SUM(investments.amount) AS `total`'
+                            users.first_name AS `Nombre`,
+                            COUNT(investments.id) AS `Cantidad`,
+                            SUM(investments.amount) AS `Suma`'
             )
             ->join('users', 'users.id', '=', 'investments.user_id')
             ->groupBy('users.id');

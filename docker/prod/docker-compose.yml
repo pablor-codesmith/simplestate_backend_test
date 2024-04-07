@@ -1,0 +1,68 @@
+version: '3.7'
+services:
+    api:
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/royal-flush-backend:${TAG}
+        env_file:
+            - .env
+        restart: always
+        volumes:
+            - ../uploads_staging_cloudfront.pem:/var/www/html/storage/uploads_staging_cloudfront.pem:ro
+        networks:
+            - royal_flush
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: us-west-2
+                awslogs-group: "/ecs/royal-flush/staging/fpm"
+    nginx:
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/royal-flush-nginx:${TAG}
+        depends_on:
+            - api
+        restart: always
+        volumes:
+            - ./nginx-local.conf:/etc/nginx/nginx.conf
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: us-west-2
+                awslogs-group: "/ecs/royal-flush/staging/nginx"
+        networks:
+            - royal_flush
+        ports:
+            - 80:80
+    worker:
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/royal-flush-backend:${TAG}
+        env_file:
+            - .env
+        entrypoint: '/usr/local/bin/php'
+        command: ['artisan', 'queue:work']
+        restart: always
+        volumes:
+            - ../uploads_staging_cloudfront.pem:/var/www/html/storage/uploads_staging_cloudfront.pem:ro
+        networks:
+            - royal_flush
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: us-west-2
+                awslogs-group: "/ecs/royal-flush/staging/worker"
+    url-to-pdf:
+        image: 972946504676.dkr.ecr.us-west-2.amazonaws.com/royal-flush-url-to-pdf:main
+        restart: always
+        env_file:
+            - pdf.env
+        ports:
+            - 9000:9000
+        healthcheck:
+            test: "wget -O/dev/null http://localhost:9000/healthcheck"
+            interval: 10s
+            timeout: 3s
+            retries: 3
+            start_period: 3s
+        logging:
+            driver: awslogs
+            options:
+                awslogs-region: us-west-2
+                awslogs-group: "/ecs/royal-flush/staging/url-to-pdf"
+networks:
+    royal_flush:

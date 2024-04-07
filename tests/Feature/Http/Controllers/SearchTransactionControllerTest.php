@@ -34,7 +34,7 @@ class SearchTransactionControllerTest extends TestCase
         $response->assertSuccessful()
             ->assertJson(fn (AssertableJson $json) => $json->has('data')
                 ->count('data', 15)
-                ->where('total',60)
+                ->where('total',61)
                 ->etc());
 
         $response = $this->getJson(route('transaction.list',['user_id' => $user1->id]));

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreignId('operation_id')->constrained();
             $table->date('created_at')->useCurrent();
+            $table->string('debin_id')->nullable();
         });
     }
 

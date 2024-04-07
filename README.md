@@ -4,6 +4,9 @@ This project was create with Laravel Framework v10 and it only for interview pro
 
 ## User Case
 
+Algunas consideraciones:
+ - Se creo una relaccion entre investments y transactions ya que las operaciones pueden ser de otro tipo a aparte de las que son
+
 ## Project setup
 
 ### First time setup
@@ -17,11 +20,15 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
+Copy `.env.example` to `.env`.
+
 After you are in sync with `origin/main` Then you can run
 ```shell
 vendor/bin/sail up -d
 vendor/bin/sail shell
 php artisan migrate
+php artisan db:seed --class=ImportDBMainSeed
+php artisan db:seed --class=ImportDBWalletSeed
 ```
 ### Daily usage
 After you are in sync with `origin/main` Then you can run

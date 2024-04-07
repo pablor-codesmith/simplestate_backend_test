@@ -23,6 +23,17 @@ services:
             - sail
         depends_on:
             - mysql
+    worker:
+      build:
+        context: .
+        dockerfile: docker/prod/Dockerfile
+        target: backend
+      env_file:
+        - .env
+      depends_on:
+        - laravel.test
+      entrypoint: '/usr/local/bin/php'
+      command: [ 'artisan', 'queue:work' ]
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
