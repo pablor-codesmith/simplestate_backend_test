@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Jobs\CreateDebinJob;
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -9,6 +11,7 @@ use SimpleState\Enums\OperationTypeEnum;
 use SimpleState\Models\Investment;
 use SimpleState\Models\Operation;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Queue;
 
 class CreateInvestmentControllerTest extends TestCase
 {
@@ -18,6 +21,8 @@ class CreateInvestmentControllerTest extends TestCase
      */
     public function test_create_investment(): void
     {
+        Queue::fake();
+
         Operation::factory()->create(['name' => OperationTypeEnum::INVEST, 'operator' => '+']);
         /** @var Array $investment */
         $investment = Investment::factory()->make()->only(['amount','project_id','user_id']);
@@ -30,6 +35,8 @@ class CreateInvestmentControllerTest extends TestCase
                             ->where('transaction.amount',$investment['amount'])
                             ->where('transaction.user_id',$investment['user_id'])
                             ->etc());
+
+        Queue::assertPushed(CreateDebinJob::class);
     }
 
     /**
