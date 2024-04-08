@@ -53,7 +53,7 @@ class DebinManager{
      * @param integer $amount
      * @param integer $transaction_id
      *
-     * @return Object
+     * @return String
      */
     public function createDebin(int $bank_id,string $account_id,string $cbu, int $amount, int $transaction_id){
         $token = $this->getDebinToken();
@@ -63,5 +63,25 @@ class DebinManager{
                          ->throw()
                          ->json('id');
         return $response;
+    }
+
+    /**
+     * Take Debin Status
+     *
+     * @param integer $bank_id
+     * @param string $account_id
+     * @param integer $debin_id
+     *
+     * @return String
+     */
+    public function takeDebinStatus(int $bank_id,string $account_id,int $debin_id){
+        $token = $this->getDebinToken();
+        $response = Http::withToken($token)
+            ->get("{$this->debinUrl}/banks/{$bank_id}/accounts/{$account_id}/owner/transaction-request-types/DEBIN/{$debin_id}")
+            ->throw()
+            ->json('status');
+
+        return $response;
+
     }
 }
